@@ -1,63 +1,56 @@
-import { validate } from 'class-validator';
+import { validateSync } from 'class-validator';
+import { NegativeNumberException } from 'src/core/exception/negativeNumber.exception';
 import { IsPositiveInteger } from '../is-positive-integer.validator';
 
+class TestClass {
+  @IsPositiveInteger()
+  value: number | undefined | null;
+}
+
 describe('IsPositiveInteger', () => {
-  class TestClass {
-    @IsPositiveInteger()
-    value: number;
+  let testClass: TestClass;
 
-    constructor(value: number) {
-      this.value = value;
-    }
-  }
-
-  it('should pass validation for positive integers', async () => {
-    const testCases = [1, 42, 100];
-
-    for (const value of testCases) {
-      const test = new TestClass(value);
-      const errors = await validate(test);
-      expect(errors.length).toBe(0);
-    }
+  beforeEach(() => {
+    testClass = new TestClass();
   });
 
-  it('should fail validation for negative integers', async () => {
-    const testCases = [-1, -42, -100];
+  it('양의 정수일 경우 유효성 검사를 통과해야 한다', () => {
+    testClass.value = 1;
+    expect(() => validateSync(testClass)).not.toThrow();
 
-    for (const value of testCases) {
-      const test = new TestClass(value);
-      const errors = await validate(test);
-      expect(errors.length).toBe(1);
-      expect(errors[0].constraints?.isPositiveInteger).toBe('NEGATIVE_NUMBER');
-    }
+    testClass.value = 100;
+    expect(() => validateSync(testClass)).not.toThrow();
   });
 
-  it('should fail validation for zero', async () => {
-    const test = new TestClass(0);
-    const errors = await validate(test);
-    expect(errors.length).toBe(1);
-    expect(errors[0].constraints?.isPositiveInteger).toBe('NEGATIVE_NUMBER');
+  it('음수일 경우 NegativeNumberException을 발생시켜야 한다', () => {
+    testClass.value = -1;
+    expect(() => validateSync(testClass)).toThrow(NegativeNumberException);
+
+    testClass.value = -100;
+    expect(() => validateSync(testClass)).toThrow(NegativeNumberException);
   });
 
-  it('should fail validation for non-integer numbers', async () => {
-    const testCases = [1.5, 2.7, -1.5];
-
-    for (const value of testCases) {
-      const test = new TestClass(value);
-      const errors = await validate(test);
-      expect(errors.length).toBe(1);
-      expect(errors[0].constraints?.isPositiveInteger).toBe('NEGATIVE_NUMBER');
-    }
+  it('0일 경우 NegativeNumberException을 발생시켜야 한다', () => {
+    testClass.value = 0;
+    expect(() => validateSync(testClass)).toThrow(NegativeNumberException);
   });
 
-  it('should fail validation for non-numeric values', async () => {
-    const testCases = [null, undefined, '123', true, false];
+  it('소수일 경우 NegativeNumberException을 발생시켜야 한다', () => {
+    testClass.value = 1.5;
+    expect(() => validateSync(testClass)).toThrow(NegativeNumberException);
 
-    for (const value of testCases) {
-      const test = new TestClass(value as any);
-      const errors = await validate(test);
-      expect(errors.length).toBe(1);
-      expect(errors[0].constraints?.isPositiveInteger).toBe('NEGATIVE_NUMBER');
-    }
+    testClass.value = 0.1;
+    expect(() => validateSync(testClass)).toThrow(NegativeNumberException);
+  });
+
+  it('숫자가 아닌 값일 경우 NegativeNumberException을 발생시켜야 한다', () => {
+    testClass.value = null;
+    expect(() => validateSync(testClass)).toThrow(NegativeNumberException);
+
+    testClass.value = undefined;
+    expect(() => validateSync(testClass)).toThrow(NegativeNumberException);
+
+    testClass.value = 'string' as any;
+    expect(() => validateSync(testClass)).toThrow(NegativeNumberException);
   });
 });

@@ -3,6 +3,7 @@ import {
   ValidationOptions,
   ValidationArguments,
 } from 'class-validator';
+import { NegativeNumberException } from 'src/core/exception/negativeNumber.exception';
 
 export function IsPositiveInteger(validationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {
@@ -16,7 +17,11 @@ export function IsPositiveInteger(validationOptions?: ValidationOptions) {
       },
       validator: {
         validate(value: any, _args: ValidationArguments) {
-          return Number.isInteger(value) && value > 0;
+          const isValid = Number.isInteger(value) && value > 0;
+          if (!isValid) {
+            throw new NegativeNumberException();
+          }
+          return isValid;
         },
       },
     });
