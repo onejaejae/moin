@@ -16,22 +16,26 @@ import { IdType } from 'src/entities/user/user.interface';
 import { plainToInstance } from 'class-transformer';
 import { UserFactory } from 'test/factory/user.factory';
 import { Encrypt } from 'libs/util/encrypt';
+import { QuoteRepositoryModule } from '../quote/repository/quote-repository.module';
+import { QuoteRepository } from '../quote/repository/quote.repository';
 
 let app: INestApplication;
 let service: AuthService;
 let userRepository: UserRepository;
+let quoteRepository: QuoteRepository;
 
 beforeAll(async () => {
   initializeTransactionalContext();
 
   const module: TestingModule = await Test.createTestingModule({
-    imports: [CoreModule, AuthModule],
+    imports: [CoreModule, AuthModule, QuoteRepositoryModule],
   }).compile();
 
   app = module.createNestApplication();
   await app.init();
 
   userRepository = module.get<UserRepository>(UserRepository);
+  quoteRepository = module.get<QuoteRepository>(QuoteRepository);
 
   service = module.get<AuthService>(AuthService);
 });
@@ -42,6 +46,7 @@ describe('AuthService', () => {
   });
 
   beforeEach(async () => {
+    await quoteRepository.deleteAllForTest();
     await userRepository.deleteAllForTest();
   });
 
