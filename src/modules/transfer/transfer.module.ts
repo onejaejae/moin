@@ -8,9 +8,11 @@ import { QuoteRepositoryModule } from '../quote/repository/quote-repository.modu
 import { JpyQuoteCalculatorStrategy } from './strategy/jpyQuote.strategy';
 import { QuoteStrategyFactory } from './strategy/quote.strategy.factory';
 import { UsdQuoteCalculatorStrategy } from './strategy/usdQuote.strategy';
+import { TransferRepositoryModule } from './repository/transfer-repository.module';
+import { RequestTransferPolicy } from './policy/requestTransfer.policy';
 
 @Module({
-  imports: [QuoteRepositoryModule],
+  imports: [QuoteRepositoryModule, TransferRepositoryModule],
   controllers: [TransferController],
   providers: [
     TransferService,
@@ -20,6 +22,7 @@ import { UsdQuoteCalculatorStrategy } from './strategy/usdQuote.strategy';
     QuoteStrategyFactory,
     JpyQuoteCalculatorStrategy,
     UsdQuoteCalculatorStrategy,
+    RequestTransferPolicy,
   ],
 })
 export class TransferModule {}

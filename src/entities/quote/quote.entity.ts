@@ -4,6 +4,7 @@ import { QuoteTargetCurrency } from './quote.interface';
 import { User } from '../user/user.entity';
 import { Transfer } from '../transfer/transfer.entity';
 import { plainToInstance } from 'class-transformer';
+import dayjs from 'dayjs';
 
 /**
  * 환전 견적 엔티티
@@ -49,11 +50,15 @@ export class Quote extends UuidEntity {
   @JoinColumn({ name: 'user_id' })
   User: User;
 
-  @OneToOne(() => Transfer)
+  @OneToOne(() => Transfer, (transfer) => transfer.Quote)
   @JoinColumn({ name: 'quoteId' })
   Transfer: Transfer;
 
   static toEntity(plainQuote: Partial<Quote>) {
     return plainToInstance(Quote, plainQuote);
+  }
+
+  isExpired(): boolean {
+    return dayjs().isAfter(this.expiredAt);
   }
 }

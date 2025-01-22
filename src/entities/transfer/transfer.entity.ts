@@ -2,6 +2,7 @@ import { UuidEntity } from 'src/core/database/typeorm/base.entity';
 import { Entity, Column, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Quote } from '../quote/quote.entity';
+import { plainToInstance } from 'class-transformer';
 
 /**
  * 환전 견적 엔티티
@@ -26,7 +27,11 @@ export class Transfer extends UuidEntity {
   @JoinColumn({ name: 'userId' })
   User: User;
 
-  @OneToOne(() => Quote)
-  @JoinColumn({ name: 'quoteId' })
-  quote: Quote;
+  @OneToOne(() => Quote, (quote) => quote.Transfer)
+  @JoinColumn({ name: 'quote_id' })
+  Quote: Quote;
+
+  static toEntity(plainTransfer: Partial<Transfer>) {
+    return plainToInstance(Transfer, plainTransfer);
+  }
 }
