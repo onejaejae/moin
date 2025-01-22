@@ -3,6 +3,7 @@ import { Entity, Column, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { QuoteTargetCurrency } from './quote.interface';
 import { User } from '../user/user.entity';
 import { Transfer } from '../transfer/transfer.entity';
+import { plainToInstance } from 'class-transformer';
 
 /**
  * 환전 견적 엔티티
@@ -20,29 +21,29 @@ export class Quote extends UuidEntity {
   @Column({ type: 'uuid' })
   userId: string;
 
-  @Column({ type: 'int', unsigned: true })
+  @Column({ type: 'decimal', precision: 15, scale: 4, unsigned: true })
   sourceAmount: number;
 
-  @Column({ type: 'int', unsigned: true })
+  @Column({ type: 'decimal', precision: 15, scale: 4, unsigned: true })
   fee: number;
 
-  @Column({ type: 'int', unsigned: true })
+  @Column({ type: 'decimal', precision: 10, scale: 4, unsigned: true })
   usdExchangeRate: number;
 
-  @Column({ type: 'int', unsigned: true })
+  @Column({ type: 'decimal', precision: 15, scale: 4, unsigned: true })
   usdAmount: number;
 
   @Column({ type: 'enum', enum: QuoteTargetCurrency })
   targetCurrency: QuoteTargetCurrency;
 
-  @Column({ type: 'int', unsigned: true })
+  @Column({ type: 'decimal', precision: 10, scale: 4, unsigned: true })
   exchangeRate: number;
 
-  @Column({ type: 'int', unsigned: true })
+  @Column({ type: 'decimal', precision: 15, scale: 4, unsigned: true })
   targetAmount: number;
 
   @Column('timestamptz')
-  expireTime: Date;
+  expiredAt: Date;
 
   @ManyToOne(() => User, (user) => user.Quotes)
   @JoinColumn({ name: 'user_id' })
@@ -51,4 +52,8 @@ export class Quote extends UuidEntity {
   @OneToOne(() => Transfer)
   @JoinColumn({ name: 'quoteId' })
   Transfer: Transfer;
+
+  static toEntity(plainQuote: Partial<Quote>) {
+    return plainToInstance(Quote, plainQuote);
+  }
 }
