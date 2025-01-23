@@ -1,99 +1,133 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+## 사용한 언어, 프레임워크, 개발 도구
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+- TypeScript
+- NestJS
+- TypeORM
+- PostgreSQL
+- Docker
+- Docker Compose
+- Jest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 로컬 프로젝트 실행 방법
 
-## Description
+1. 해당 명령어를 통해 local-db를 실행합니다.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ yarn install
+```
+yarn docker:up:local
 ```
 
-## Compile and run the project
+2. Dependencies 설치
 
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+```
+yarn install
 ```
 
-## Run tests
+3. 서버 실행
 
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+```
+yarn start:local
 ```
 
-## Deployment
+4. docker-compose 중지
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ yarn install -g mau
-$ mau deploy
+```
+yarn docker:down:local
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 테스트 계정
 
-## Resources
+- yarn seed 명령어를 통해 테스트 계정을 생성합니다.
 
-Check out a few resources that may come in handy when working with NestJS:
+```
+yarn seed
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+<br>
 
-## Support
+- 개인 회원 계정
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+email: 'test@test.com'
+password: 'test'
+```
 
-## Stay in touch
+- 법인 회원 계정
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```
+email: 'test2@test.com'
+password: 'test'
+```
 
-## License
+<br>
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 테스트 코드 실행 방법
+
+1. 테스트 용 docker-compose 실행
+
+```
+yarn docker:up:local-test
+```
+
+2. 테스트 코드 실행
+
+```
+yarn test
+```
+
+3. 테스트 용 docker-compose 중지
+
+```
+yarn docker:down:local-test
+```
+
+<br>
+
+## API 명세서
+
+https://documenter.getpostman.com/view/13091019/2sAYQfC8eX
+
+<br>
+
+## 설계 및 패턴
+
+### 주요 설계 특징
+
+A. 모듈화 (Modularity)
+
+- 각 기능별로 독립적인 모듈로 분리
+- 기능 확장과 유지보수가 용이
+- 높은 응집도와 낮은 결합도
+
+B. Global Core Module
+
+- 공통 기능들을 CoreModule로 중앙화
+- 트랜잭션 관리, 설정, JWT, 인터셉터 등 공통 기능 제공
+- 중복 코드 방지와 일관된 정책 적용 가능
+
+C. 제네릭 리포지토리 패턴
+
+- 공통 CRUD 작업을 제네릭 리포지토리로 추상화
+- 코드 재사용성 증가
+- 일관된 데이터 접근 패턴 제공
+
+D. 트랜잭션 관리
+
+- 전역 트랜잭션 미들웨어를 통한 일관된 트랜잭션 관리
+- 데이터 일관성 보장
+- 트랜잭션 관리 코드의 중복 제거
+
+E. 인터셉터 활용
+
+- 응답 형식 표준화
+- 전역 에러 처리
+- Cross-cutting Concerns 효과적 처리
+
+F. 보안
+
+- JWT 기반 인증
+- 가드를 통한 접근 제어
+- 보안 정책의 중앙화된 관리
+
+<br>
+
+<br>
