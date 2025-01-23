@@ -40,6 +40,27 @@ export class GenericTypeOrmRepository<
     return res as OmitNotJoinedProps<T, R> | null;
   }
 
+  async findOneWithOmitNotJoinedPropsOrThrow<R extends FindOptionsRelations<T>>(
+    filters: FindOptionsWhere<T> | FindOptionsWhere<T>[],
+    findOptionsRelations: R,
+    orderOptions?: FindOptionsOrder<T>,
+    withDeleted?: boolean,
+  ): Promise<OmitNotJoinedProps<T, R>> {
+    const findOption: FindOneOptions = {
+      where: filters,
+      relations: findOptionsRelations,
+      order: orderOptions,
+      withDeleted,
+    };
+    const res = await this.findOne(findOption);
+
+    if (!res) {
+      throw new NotFoundException('Not found');
+    }
+
+    return res as OmitNotJoinedProps<T, R>;
+  }
+
   async findManyWithOmitNotJoinedProps<
     R extends FindOptionsRelations<T> = FindOptionsRelations<T>,
   >(
