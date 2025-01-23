@@ -7,8 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "start:local": "NODE_ENV=local nest start --watch",
-    "test": "NODE_ENV=${npm_config_env:-test} jest --config jest.config.js --forceExit --logHeapUsage --no-compilation-cache --detectOpenHandles",
+    "start:local": "NODE_ENV=local TZ=utc nest start --watch",
+    "test": "NODE_ENV=${npm_config_env:-test} TZ=utc jest --config jest.config.js --forceExit --logHeapUsage --no-compilation-cache --detectOpenHandles",
     "docker:up:local": "docker compose -f docker-compose.local.yml up --build -d",
     "docker:down:local": "docker compose -f docker-compose.local.yml down",
     "docker:up:local-test": "docker compose -f docker-compose.local-test.yml up --build -d",

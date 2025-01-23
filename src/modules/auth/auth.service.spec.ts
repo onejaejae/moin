@@ -18,17 +18,25 @@ import { UserFactory } from 'test/factory/user.factory';
 import { Encrypt } from 'libs/util/encrypt';
 import { QuoteRepositoryModule } from '../quote/repository/quote-repository.module';
 import { QuoteRepository } from '../quote/repository/quote.repository';
+import { TransferRepository } from '../transfer/repository/transfer.repository';
+import { TransferRepositoryModule } from '../transfer/repository/transfer-repository.module';
 
 let app: INestApplication;
 let service: AuthService;
 let userRepository: UserRepository;
 let quoteRepository: QuoteRepository;
+let transferRepository: TransferRepository;
 
 beforeAll(async () => {
   initializeTransactionalContext();
 
   const module: TestingModule = await Test.createTestingModule({
-    imports: [CoreModule, AuthModule, QuoteRepositoryModule],
+    imports: [
+      CoreModule,
+      AuthModule,
+      QuoteRepositoryModule,
+      TransferRepositoryModule,
+    ],
   }).compile();
 
   app = module.createNestApplication();
@@ -36,7 +44,7 @@ beforeAll(async () => {
 
   userRepository = module.get<UserRepository>(UserRepository);
   quoteRepository = module.get<QuoteRepository>(QuoteRepository);
-
+  transferRepository = module.get<TransferRepository>(TransferRepository);
   service = module.get<AuthService>(AuthService);
 });
 
@@ -46,6 +54,7 @@ describe('AuthService', () => {
   });
 
   beforeEach(async () => {
+    await transferRepository.deleteAllForTest();
     await quoteRepository.deleteAllForTest();
     await userRepository.deleteAllForTest();
   });
