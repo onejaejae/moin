@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, NotFoundException } from '@nestjs/common';
 import { CoreModule } from 'src/core/core.module';
 import { Test, TestingModule } from '@nestjs/testing';
 import { initializeTransactionalContext } from 'typeorm-transactional';
@@ -18,6 +18,7 @@ import { plainToInstance } from 'class-transformer';
 import { QuoteTargetCurrency } from 'src/entities/quote/quote.interface';
 import { CreateQuoteBody } from '../../dto/req/createQuote.body';
 import { TransferFactory } from 'test/factory/transfer.factory';
+import { v4 } from 'uuid';
 
 let app: INestApplication;
 let service: TransferService;
@@ -287,6 +288,63 @@ describe('TransferService', () => {
       await expect(
         service.requestTransfer(user.id, user.idType, quote3.id),
       ).rejects.toThrow(new LimitExcessException());
+    });
+  });
+
+  describe('getTransferList', () => {
+    it('회원 거래 이력 조회 API 정상 동작합니다.', async () => {
+      // given
+      const user = await UserFactory.createUser(
+        'test@example.com',
+        'password123',
+        'test',
+        IdType.BusinessNo,
+        '123-12-12345',
+        userRepository,
+      );
+
+      const quote1 = await QuoteFactory.createQuote(
+        user.id,
+        3000,
+        dayjs().add(10, 'minute').toDate(),
+        quoteRepository,
+      );
+      const quote2 = await QuoteFactory.createQuote(
+        user.id,
+        3000,
+        dayjs().add(10, 'minute').toDate(),
+        quoteRepository,
+      );
+      const quote3 = await QuoteFactory.createQuote(
+        user.id,
+        3000,
+        dayjs().add(10, 'minute').toDate(),
+        quoteRepository,
+      );
+
+      await Promise.all([
+        TransferFactory.createTransfer(user.id, quote1.id, transferRepository),
+        TransferFactory.createTransfer(user.id, quote2.id, transferRepository),
+        TransferFactory.createTransfer(user.id, quote3.id, transferRepository),
+      ]);
+
+      // when
+      const result = await service.getTransferList(user.id);
+
+      // then
+      expect(result).toBeDefined();
+      expect(result.id).toBe(user.id);
+      expect(result.Transfers.length).toBe(3);
+    });
+
+    it('존재하지 않는 회원의 거래 이력을 조회하면 NotFoundException 예외가 발생합니다.', async () => {
+      // given
+      const userId = v4();
+
+      // when
+      await expect(service.getTransferList(userId)).rejects.toThrow(
+        new NotFoundException('Not found'),
+      );
     });
   });
 });

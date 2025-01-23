@@ -30,7 +30,7 @@ export class TransferController {
     @RequestedUser() user: User,
     @Body() body: CreateQuoteBody,
   ) {
-    await this.service.createQuote(user.id, body);
+    return this.service.createQuote(user.id, body);
   }
 
   @Post('/request')
