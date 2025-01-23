@@ -8,15 +8,27 @@ import { QuoteExpiredException } from 'src/core/exception/quoteExpired.exception
 import { RequestTransferPolicy } from '../policy/requestTransfer.policy';
 import { Transfer } from 'src/entities/transfer/transfer.entity';
 import { TransferRepository } from '../repository/transfer.repository';
+import { UserRepository } from 'src/modules/user/repository/user.repository';
+import { TTransferList } from '../transfer.interface';
 
 @Injectable()
 export class TransferService {
   constructor(
     private readonly quoteStrategyFactory: QuoteStrategyFactory,
     private readonly requestTransferPolicy: RequestTransferPolicy,
+    private readonly userRepository: UserRepository,
     private readonly quoteRepository: QuoteRepository,
     private readonly transferRepository: TransferRepository,
   ) {}
+
+  async getTransferList(userId: User['id']): Promise<TTransferList> {
+    return this.userRepository.findOneWithOmitNotJoinedPropsOrThrow(
+      {
+        id: userId,
+      },
+      { Transfers: { Quote: true } },
+    );
+  }
 
   async createQuote(userId: User['id'], body: CreateQuoteBody) {
     const { amount, targetCurrency } = body;

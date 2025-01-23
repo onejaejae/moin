@@ -24,7 +24,7 @@ export class Transfer extends UuidEntity {
   userId: string;
 
   @ManyToOne(() => User, (user) => user.Transfers)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   User: User;
 
   @OneToOne(() => Quote, (quote) => quote.Transfer)

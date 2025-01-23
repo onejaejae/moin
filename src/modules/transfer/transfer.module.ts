@@ -10,9 +10,14 @@ import { QuoteStrategyFactory } from './strategy/quote.strategy.factory';
 import { UsdQuoteCalculatorStrategy } from './strategy/usdQuote.strategy';
 import { TransferRepositoryModule } from './repository/transfer-repository.module';
 import { RequestTransferPolicy } from './policy/requestTransfer.policy';
+import { UserRepositoryModule } from '../user/repository/user-repository.module';
 
 @Module({
-  imports: [QuoteRepositoryModule, TransferRepositoryModule],
+  imports: [
+    QuoteRepositoryModule,
+    TransferRepositoryModule,
+    UserRepositoryModule,
+  ],
   controllers: [TransferController],
   providers: [
     TransferService,
