@@ -5,6 +5,7 @@ import { User } from '../user/user.entity';
 import { Transfer } from '../transfer/transfer.entity';
 import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
+import { DecimalTransformer } from 'src/core/database/typeorm/transformer/decimal.transformer';
 
 /**
  * 환전 견적 엔티티
@@ -31,7 +32,13 @@ export class Quote extends UuidEntity {
   @Column({ type: 'decimal', precision: 10, scale: 4, unsigned: true })
   usdExchangeRate: number;
 
-  @Column({ type: 'decimal', precision: 15, scale: 4, unsigned: true })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 4,
+    unsigned: true,
+    transformer: new DecimalTransformer(),
+  })
   usdAmount: number;
 
   @Column({ type: 'enum', enum: QuoteTargetCurrency })
