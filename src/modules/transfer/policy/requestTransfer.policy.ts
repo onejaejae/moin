@@ -16,8 +16,6 @@ export class RequestTransferPolicy {
   async validateDailyTransferLimit(userId: User['id'], idType: User['idType']) {
     const todayTransfers =
       await this.transferRepository.findTodayTransfers(userId);
-
-    console.log('todayTransfers---', todayTransfers);
     const totalUsdAmount = this.calculateTotalUsdAmount(todayTransfers);
 
     const limit = this.DAILY_USD_LIMITS[idType];
