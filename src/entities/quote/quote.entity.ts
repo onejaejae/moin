@@ -23,13 +23,31 @@ export class Quote extends UuidEntity {
   @Column({ type: 'uuid' })
   userId: string;
 
-  @Column({ type: 'decimal', precision: 15, scale: 4, unsigned: true })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 4,
+    unsigned: true,
+    transformer: new DecimalTransformer(),
+  })
   sourceAmount: number;
 
-  @Column({ type: 'decimal', precision: 15, scale: 4, unsigned: true })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 4,
+    unsigned: true,
+    transformer: new DecimalTransformer(),
+  })
   fee: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 4, unsigned: true })
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 4,
+    unsigned: true,
+    transformer: new DecimalTransformer(),
+  })
   usdExchangeRate: number;
 
   @Column({
@@ -44,10 +62,22 @@ export class Quote extends UuidEntity {
   @Column({ type: 'enum', enum: QuoteTargetCurrency })
   targetCurrency: QuoteTargetCurrency;
 
-  @Column({ type: 'decimal', precision: 10, scale: 4, unsigned: true })
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 4,
+    unsigned: true,
+    transformer: new DecimalTransformer(),
+  })
   exchangeRate: number;
 
-  @Column({ type: 'decimal', precision: 15, scale: 4, unsigned: true })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 4,
+    unsigned: true,
+    transformer: new DecimalTransformer(),
+  })
   targetAmount: number;
 
   @Column('timestamptz')
