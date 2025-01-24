@@ -144,7 +144,7 @@ async createQuote(userId: User['id'], body: CreateQuoteBody) {
 
 송금 견적서 생성 기능을 구현하면서 JPY와 USD 등 서로 다른 통화에 대해 견적을 계산하는 로직이 각기 다르다는 점이 고민이 되었습니다. 각 통화마다 환율, 수수료, 최종 금액 계산 방식 등이 상이하기 때문에 이를 하나의 클래스에서 처리하려고 하면 코드의 복잡도가 증가하고, 유지보수가 어려워질 것이라 생각하였습니다.
 
-해당 문제를 해결하기 위해 **전략 패턴(Strategy Pattern)**을 적용했습니다. 전략 패턴을 통해 통화별 송금 견적서를 생성하는 로직을 별도의 클래스(JpyQuoteCalculatorStrategy, UsdQuoteCalculatorStrategy)로 캡슐화했을 때, 다음과 같은 이점을 얻을 수 있다고 생각합니다.
+해당 문제를 해결하기 위해 `전략 패턴(Strategy Pattern)`을 적용했습니다. 전략 패턴을 통해 통화별 송금 견적서를 생성하는 로직을 별도의 클래스(JpyQuoteCalculatorStrategy, UsdQuoteCalculatorStrategy)로 캡슐화했을 때, 다음과 같은 이점을 얻을 수 있다고 생각합니다.
 
 <br>
 
